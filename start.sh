@@ -11,5 +11,5 @@ tailscale up --authkey="${TAILSCALE_AUTH_KEY}" --hostname="render-vpn-exit" --ad
 # 3. Handle Render's required web server port
 echo "VPN Node is ready. Starting web listener..."
 while true; do 
-    echo -e "HTTP/1.1 200 OK\r\nContent-Length: 15\r\n\r\nVPN Node Online" | nc -l -p 8080
+    printf "HTTP/1.1 200 OK\r\nContent-Length: 15\r\n\r\nVPN Node Online" | nc -l -p 8080
 done
