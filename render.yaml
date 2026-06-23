@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: tailscale-exit-node
+    env: docker
+    plan: starter # A paid plan is required to prevent the VPN from sleeping
+    region: oregon # Choose the region closest to you for the lowest latency
+    envVars:
+      - key: TAILSCALE_AUTH_KEY
+        sync: false # You will input this manually in the dashboard
