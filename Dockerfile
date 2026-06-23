@@ -4,7 +4,7 @@ FROM debian:bookworm-slim
 RUN apt-get update && apt-get install -y \
     curl \
     netcat-openbsd \
-    && curl -fsSL https://tailscale.com | sh \
+    && curl -fsSL https://tailscale.com/install.sh | sh \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
