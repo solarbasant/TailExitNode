@@ -1,13 +1,10 @@
 FROM debian:bookworm-slim
 
-# Install dependencies and Tailscale
+# Install core dependencies, then run official Tailscale setup script
 RUN apt-get update && apt-get install -y \
     curl \
-    gpg \
     netcat-openbsd \
-    && curl -fsSL https://tailscale.com | gpg --dearmor -o /usr/share/keyrings/tailscale-archive-keyring.gpg \
-    && curl -fsSL https://tailscale.com | tee /etc/apt/sources.list.d/tailscale.list \
-    && apt-get update && apt-get install -y tailscale \
+    && curl -fsSL https://tailscale.com | sh \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
