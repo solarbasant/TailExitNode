@@ -6,13 +6,13 @@ STATE_FILE="/var/lib/tailscale/tailscaled.state"
 # Ensure the local tailscale system directory exists
 mkdir -p /var/lib/tailscale
 
-# 1. Download existing state from Supabase if it exists
+# 1. Download existing state from Supabase if it exists (Fixed URL)
 if [ -n "$SUPABASE_URL" ] && [ -n "$SUPABASE_KEY" ]; then
     echo "Attempting to fetch Tailscale state from Supabase..."
     HTTP_CODE=$(curl -s -o "$STATE_FILE" -w "%{http_code}" \
         -H "Authorization: Bearer $SUPABASE_KEY" \
         -H "apikey: $SUPABASE_KEY" \
-        "$SUPABASE_URL/storage/v1/object/authenticated/tailscale/tailscaled.state")
+        "$SUPABASE_URL/storage/v1/object/tailscale/tailscaled.state")
     
     if [ "$HTTP_CODE" = "200" ]; then
         echo "Successfully restored Tailscale identity from Supabase."
@@ -30,7 +30,10 @@ sleep 2
 echo "Connecting to Tailscale network..."
 tailscale up --authkey="${TAILSCALE_AUTH_KEY}" --hostname="render-vpn-exit" --advertise-exit-node
 
-# 4. Upload the generated state file back to Supabase
+# Give the daemon 3 seconds to fully finalize and write the state file to disk
+sleep 3
+
+# 4. Upload the generated state file back to Supabase (Fixed URL)
 if [ -n "$SUPABASE_URL" ] && [ -n "$SUPABASE_KEY" ] && [ -f "$STATE_FILE" ]; then
     echo "Backing up current Tailscale state to Supabase..."
     UPLOAD_CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
@@ -39,7 +42,7 @@ if [ -n "$SUPABASE_URL" ] && [ -n "$SUPABASE_KEY" ] && [ -f "$STATE_FILE" ]; the
         -H "x-upsert: true" \
         -H "Content-Type: application/octet-stream" \
         --data-binary @"$STATE_FILE" \
-        "$SUPABASE_URL/storage/v1/object/authenticated/tailscale/tailscaled.state")
+        "$SUPABASE_URL/storage/v1/object/tailscale/tailscaled.state")
     echo "State backup completed with HTTP status: $UPLOAD_CODE"
 fi
 
