@@ -16,7 +16,7 @@ WORKDIR /app
 COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 
-# Expose a dummy port to satisfy Render's health checks
+# Expose the port Render expects
 EXPOSE 8080
 
 CMD ["/app/start.sh"]
