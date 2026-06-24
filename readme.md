@@ -1,4 +1,4 @@
-# Tailscale Exit Node on Render (Free Tier Optimized)
+# Tailscale Exit Node on Render 
 
 This repository contains the configuration files required to deploy a permanent, persistent **Tailscale Exit Node** on Render’s Free Tier. 
 
@@ -6,7 +6,7 @@ By default, Render's Free Tier containers are ephemeral and wipe their local sto
 
 ---
 
-## 🚀 How It Works
+##  How It Works
 
 1. **State Restoration:** Upon booting, the container checks a private Supabase Storage bucket for an existing `tailscaled.state` file.
 2. **Userspace Routing:** The container launches the Tailscale daemon in userspace networking mode (`--tun=userspace-networking`) to bypass Render's root-level network environment restrictions.
@@ -29,7 +29,7 @@ You must supply these environment variables in your Render service configuration
 
 ---
 
-## 📦 Project Files Included
+##  Project Files Included
 
 * **`Dockerfile`**: Builds a lightweight Debian-slim image containing the official Tailscale client binaries and netcat utilities.
 * **`start.sh`**: The orchestrator script handling cloud state-syncing, VPN registration, and the connection-closing health check mock server.
@@ -37,7 +37,7 @@ You must supply these environment variables in your Render service configuration
 
 ---
 
-## ⚡ Step-by-Step Setup Guide
+##  Step-by-Step Setup Guide
 
 ### Step 1: Create your Supabase Storage Bucket
 1. Log into your **Supabase Dashboard** and go to **Storage** (left sidebar).
@@ -61,7 +61,7 @@ You must supply these environment variables in your Render service configuration
 
 ---
 
-## ⏰ Maintaining 24/7 Uptime (Anti-Spin Down)
+##  Maintaining 24/7 Uptime (Anti-Spin Down)
 
 Because Render's Free tier automatically puts web services to sleep after 15 minutes of inbound HTTP inactivity, your VPN will spin down if left unattended. Render's load balancer cannot see your underlying Tailscale VPN traffic.
 
